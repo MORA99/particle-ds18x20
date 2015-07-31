@@ -44,9 +44,8 @@
 // rom-code size including CRC
 #define OW_ROMCODE_SIZE 8
 
-void find_sensor(uint8_t *diff, uint8_t id[]);
-
-void setPin(uint8_t newpin);
+extern void find_sensor(uint8_t *diff, uint8_t id[]);
+extern void setPin(uint8_t newpin);
 extern uint8_t search_sensors(int maxSensors, uint8_t *sensorDB);
 
 extern uint8_t ow_reset(void);

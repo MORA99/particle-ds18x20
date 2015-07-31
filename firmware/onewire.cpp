@@ -18,7 +18,7 @@
 #  define debug_print(msg) (void)0
 #endif
 
-uint8_t pin = D0 //Default
+uint8_t pin = D0; //Default
 
 #define OW_GET_IN()   ( digitalRead(pin) )
 #define OW_OUT_LOW()  ( digitalWrite(pin,LOW) )
