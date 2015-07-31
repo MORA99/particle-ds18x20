@@ -1,0 +1,7 @@
+{
+    "name": "ds18x20",
+    "version": "0.0.1",
+    "author": "MORA99 <jkn@air-port.dk>",
+    "license": "GPL",
+    "description": "DS18B20/DS18S20 library with support for multiple sensors"
+}
