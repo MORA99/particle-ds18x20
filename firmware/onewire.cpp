@@ -18,11 +18,18 @@
 #  define debug_print(msg) (void)0
 #endif
 
-#define OW_GET_IN()   ( digitalRead(D0) )
-#define OW_OUT_LOW()  ( digitalWrite(D0,LOW) )
-#define OW_OUT_HIGH() ( digitalWrite(D0,HIGH) )
-#define OW_DIR_IN()   ( pinMode(D0, INPUT) )
-#define OW_DIR_OUT()  ( pinMode(D0, OUTPUT) )
+uint8_t pin = D0 //Default
+
+#define OW_GET_IN()   ( digitalRead(pin) )
+#define OW_OUT_LOW()  ( digitalWrite(pin,LOW) )
+#define OW_OUT_HIGH() ( digitalWrite(pin,HIGH) )
+#define OW_DIR_IN()   ( pinMode(pin, INPUT) )
+#define OW_DIR_OUT()  ( pinMode(pin, OUTPUT) )
+
+void setPin(uint8_t newpin)
+{
+	pin = newpin;
+}
 
 void find_sensor(uint8_t *diff, uint8_t id[])
 {

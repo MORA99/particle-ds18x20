@@ -1,6 +1,6 @@
-#include "ds18b20.h"
-#include "onewire.h"
-#include "crc8.h"
+#include "ds18x20/ds18x20.h"
+#include "ds18x20/onewire.h"
+
 uint8_t sensors[80];
 
 void log(char* msg)
@@ -30,17 +30,10 @@ void loop()
     
     for (uint8_t i=0; i<numsensors; i++)
     {
-        if (sensors[i*OW_ROMCODE_SIZE+0] == 0x10 || sensors[i*OW_ROMCODE_SIZE+0] == 0x28)
+        if (sensors[i*OW_ROMCODE_SIZE+0] == 0x10 || sensors[i*OW_ROMCODE_SIZE+0] == 0x28) //0x10=DS18S20, 0x28=DS18B20
         {
             //log("Found a DS18B20");
-			uint8_t sensorID[OW_ROMCODE_SIZE];
-			for (uint8_t o=0; o<OW_ROMCODE_SIZE; o++)
-			{
-				sensorID[o] = sensors[i*OW_ROMCODE_SIZE+o];
-			}
-
-			if ( DS18X20_read_meas( sensorID, &subzero, &cel, &cel_frac_bits) == DS18X20_OK ) {
-				
+			if ( DS18X20_read_meas( &sensors[i*OW_ROMCODE_SIZE], &subzero, &cel, &cel_frac_bits) == DS18X20_OK ) {
 				char sign = (subzero) ? '-' : '+';
 				int frac = cel_frac_bits*DS18X20_FRACCONV;
 				sprintf(msg, "Sensor# %d (%02X%02X%02X%02X%02X%02X%02X%02X) =  : %c%d.%04d\r\n",i+1,
