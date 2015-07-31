@@ -11,7 +11,7 @@ void log(char* msg)
 
 void setup()
 {
-    
+    ow_setPin(D0);
 }
 
 void loop()
@@ -23,7 +23,7 @@ void loop()
     DS18X20_start_meas( DS18X20_POWER_PARASITE, NULL ); //Asks all DS18x20 devices to start temperature measurement, takes up to 750ms at max resolution
     delay(1000); //If your code has other tasks, you can store the timestamp instead and return when a second has passed.
 
-    uint8_t numsensors = search_sensors(10, sensors);
+    uint8_t numsensors = ow_search_sensors(10, sensors);
     sprintf(msg, "Found %i sensors", numsensors);
     log(msg);
 

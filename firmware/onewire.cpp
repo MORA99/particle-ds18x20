@@ -26,12 +26,12 @@ uint8_t pin = D0; //Default
 #define OW_DIR_IN()   ( pinMode(pin, INPUT) )
 #define OW_DIR_OUT()  ( pinMode(pin, OUTPUT) )
 
-void setPin(uint8_t newpin)
+void ow_setPin(uint8_t newpin)
 {
 	pin = newpin;
 }
 
-void find_sensor(uint8_t *diff, uint8_t id[])
+void ow_find_sensor(uint8_t *diff, uint8_t id[])
 {
 	for (;;) {
 		*diff = ow_rom_search( *diff, &id[0] );
@@ -40,7 +40,7 @@ void find_sensor(uint8_t *diff, uint8_t id[])
 	}
 }
 
-uint8_t search_sensors(int maxSensors, uint8_t *sensorScan)
+uint8_t ow_search_sensors(int maxSensors, uint8_t *sensorScan)
 {
 	uint8_t i;
 	uint8_t id[OW_ROMCODE_SIZE];
@@ -52,7 +52,7 @@ uint8_t search_sensors(int maxSensors, uint8_t *sensorScan)
 	
 	for( diff = OW_SEARCH_FIRST; diff != OW_LAST_DEVICE && nSensors < maxSensors ; )
 	{
-		find_sensor( &diff, &id[0] );
+		ow_find_sensor( &diff, &id[0] );
 		
 		if( diff == OW_PRESENCE_ERR ) {
 			debug_print("No Sensor found\r" );
