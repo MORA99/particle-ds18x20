@@ -99,23 +99,24 @@ void ow_parasite_disable(void)
 uint8_t ow_reset(void)
 {
 	uint8_t err;
-	
-	OW_OUT_LOW(); // disable internal pull-up (maybe on from parasite)
-	OW_DIR_OUT(); // pull OW-Pin low for 480us
-	
-	delayMicroseconds(480);
-	
-	// set Pin as input - wait for clients to pull low
-	OW_DIR_IN(); // input
-	
-	delayMicroseconds(66);
-	err = OW_GET_IN();		// no presence detect
-	// nobody pulled to low, still high	
+	ATOMIC_BLOCK() {	
+		OW_OUT_LOW(); // disable internal pull-up (maybe on from parasite)
+		OW_DIR_OUT(); // pull OW-Pin low for 480us
+		
+		delayMicroseconds(480);
+		
+		// set Pin as input - wait for clients to pull low
+		OW_DIR_IN(); // input
+		
+		delayMicroseconds(66);
+		err = OW_GET_IN();		// no presence detect
+		// nobody pulled to low, still high	
 
-	// after a delay the clients should release the line
-	// and input-pin gets back to high due to pull-up-resistor
-	delayMicroseconds(480-66);
-	if( OW_GET_IN() == 0 )		// short circuit
+		// after a delay the clients should release the line
+		// and input-pin gets back to high due to pull-up-resistor
+		delayMicroseconds(480-66);
+		if( OW_GET_IN() == 0 )		// short circuit
+	}
 	err = 1;
 	
 	return err;
@@ -124,17 +125,17 @@ uint8_t ow_reset(void)
 uint8_t ow_read_bit()
 {
 	int result;
-
-	OW_DIR_OUT(); // drive bus low
-	delayMicroseconds(6);
-	OW_DIR_IN();
-	delayMicroseconds(6); //Recommended values say 9
-	if( OW_GET_IN() == 0 )
-	result = 0;
-	else
-	result=1; // sample at end of read-timeslot (Reading only possible with high bit)
-	delayMicroseconds(58); // Complete the time slot and 10us recovery
-
+	ATOMIC_BLOCK() {	
+		OW_DIR_OUT(); // drive bus low
+		delayMicroseconds(6);
+		OW_DIR_IN();
+		delayMicroseconds(6); //Recommended values say 9
+		if( OW_GET_IN() == 0 )
+		result = 0;
+		else
+		result=1; // sample at end of read-timeslot (Reading only possible with high bit)
+		delayMicroseconds(58); // Complete the time slot and 10us recovery
+	}
 	return result;
 }
 
@@ -142,19 +143,23 @@ void ow_write_bit(uint8_t bit)
 {
 	if (bit)
 	{
-		// Write '1' bit
-		OW_DIR_OUT(); // drive bus low
-		delayMicroseconds(6);
-		OW_DIR_IN();
-		delayMicroseconds(64); // Complete the time slot and 10us recovery
+		ATOMIC_BLOCK() {		
+			// Write '1' bit
+			OW_DIR_OUT(); // drive bus low
+			delayMicroseconds(6);
+			OW_DIR_IN();
+			delayMicroseconds(64); // Complete the time slot and 10us recovery
+		}
 	}
 	else
 	{
-		// Write '0' bit
-		OW_DIR_OUT(); // drive bus low
-		delayMicroseconds(60);
-		OW_DIR_IN();
-		delayMicroseconds(10);
+		ATOMIC_BLOCK() {		
+			// Write '0' bit
+			OW_DIR_OUT(); // drive bus low
+			delayMicroseconds(60);
+			OW_DIR_IN();
+			delayMicroseconds(10);
+		}
 	}
 }
 

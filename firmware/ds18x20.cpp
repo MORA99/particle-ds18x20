@@ -88,8 +88,7 @@ i.e.: sz=0, c=28, frac=15 returns 289 (=28.9°C)
 13	8125	125
 14	8750	750	14
 15	9375	375	*/
-uint16_t DS18X20_temp_to_decicel(uint8_t subzero, uint8_t cel,
-uint8_t cel_frac_bits)
+uint16_t DS18X20_temp_to_decicel(uint8_t subzero, uint8_t cel, uint8_t cel_frac_bits)
 {
 	uint16_t h;
 	uint8_t  i;
@@ -112,8 +111,7 @@ uint8_t cel_frac_bits)
 returns -1 if param-pair1 < param-pair2
 0 if ==
 1 if >    */
-int8_t DS18X20_temp_cmp(uint8_t subzero1, uint16_t cel1,
-uint8_t subzero2, uint16_t cel2)
+int8_t DS18X20_temp_cmp(uint8_t subzero1, uint16_t cel1, uint8_t subzero2, uint16_t cel2)
 {
 	int16_t t1 = (subzero1) ? (cel1*(-1)) : (cel1);
 	int16_t t2 = (subzero2) ? (cel2*(-1)) : (cel2);
