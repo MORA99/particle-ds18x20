@@ -116,8 +116,8 @@ uint8_t ow_reset(void)
 		// and input-pin gets back to high due to pull-up-resistor
 		delayMicroseconds(480-66);
 		if( OW_GET_IN() == 0 )		// short circuit
+			err = 1;
 	}
-	err = 1;
 	
 	return err;
 }
