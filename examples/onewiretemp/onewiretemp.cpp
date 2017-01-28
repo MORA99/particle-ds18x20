@@ -1,11 +1,11 @@
-#include "ds18x20/ds18x20.h"
-#include "ds18x20/onewire.h"
+#include "ds18x20.h"
+#include "onewire.h"
 
 uint8_t sensors[80];
 
 void log(char* msg)
 {
-    Spark.publish("log", msg);
+    Particle.publish("log", msg);
     delay(500);
 }
 
@@ -53,7 +53,7 @@ void loop()
 			}
 			else
 			{
-			    Spark.publish("log", "CRC Error (lost connection?)");
+			    Particle.publish("log", "CRC Error (lost connection?)");
 			}
         }
     }
